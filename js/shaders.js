@@ -52,39 +52,29 @@ void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
   vec2 ruv = rot(uv, u_angle);
 
-  // Ground: near-black with a slow large-scale grain so it reads as
-  // imperfect concrete rather than flat vector color.
-  float ground = 1.0 + (vnoise(uv * 1.6 + u_time * 0.02) - 0.5) * 0.09;
-  vec3 col = u_void * ground;
-
   // The shaft: a soft-edged band whose centerline drifts, nudged by pointer.
   float center = sin(u_time * 0.03) * 0.10 + u_pointer.x * 0.05;
   float d = abs(ruv.x - center);
   float width = 0.30 + sin(u_time * 0.021) * 0.018;
 
   float band = smoothstep(width, 0.0, d);
-  band *= mix(1.0, 0.25, smoothstep(0.0, 0.75, u_scroll)); // dims as you scroll past
-  band *= 0.85;
+  band *= mix(1.0, 0.22, smoothstep(0.0, 0.75, u_scroll)); // dims as you scroll past
 
-  vec3 shaft = mix(u_surface, u_line, smoothstep(width, width * 0.34, d));
-  // The amber is a thin warm seam inside a mostly-neutral shaft, never a bar.
-  shaft = mix(shaft, u_accent, smoothstep(width * 0.10, 0.0, d) * 0.42);
-  col = mix(col, shaft, band);
+  // Additive light only — no ground is drawn, so the photograph beneath stays
+  // visible and this layer reads as light falling across it.
+  float core = smoothstep(width * 0.16, 0.0, d);
+  vec3 light = mix(u_text * 0.42, u_accent, core * 0.62);
 
   // Dust: sparse specks drifting along the shaft's own axis, slower than the
   // shaft itself so they read as suspended particulate.
   float dust = fbm2(ruv * 7.0 + vec2(u_time * 0.006, u_time * 0.015));
   dust = smoothstep(0.58, 0.78, dust) * band;
-  col = screenBlend(col, u_text * dust * 0.10);
 
-  // A second, finer grain pass keeps large flat areas from banding.
-  float fine = hash(gl_FragCoord.xy + fract(u_time) * 13.0);
-  col += (fine - 0.5) * 0.012;
+  float a = band * 0.30 + dust * 0.14;
+  a *= smoothstep(1.35, 0.35, length(uv)); // falls off at the corners
 
-  float vig = smoothstep(1.25, 0.28, length(uv));
-  col *= mix(0.62, 1.0, vig);
-
-  gl_FragColor = vec4(col, 1.0);
+  // Premultiplied: the canvas composites over the photo without darkening it.
+  gl_FragColor = vec4(light * a + u_text * dust * 0.10, a);
 }
 `;
 

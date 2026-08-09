@@ -37,6 +37,38 @@
     var(--c-void);
 }
 
+/* Photographic ground. Sits under the shader and under the overlay, so the
+   stack reads: photo -> overlay -> canvas -> content. The overlay is what
+   guarantees text contrast, not the photo, so swapping the photo for a
+   brighter one cannot break legibility. */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(calc(90deg - var(--angle)),
+      color-mix(in srgb, var(--c-void) 88%, transparent) 0%,
+      color-mix(in srgb, var(--c-void) 66%, transparent) 52%,
+      color-mix(in srgb, var(--c-void) 34%, transparent) 100%),
+    linear-gradient(to top,
+      var(--c-void) 0%,
+      color-mix(in srgb, var(--c-void) 40%, transparent) 38%,
+      color-mix(in srgb, var(--c-void) 30%, transparent) 100%);
+}
+
 .hero__inner { position: relative; z-index: var(--z-content); width: 100%; }
 
 .hero__rule {
@@ -53,8 +85,13 @@
   margin-top: var(--s-3);
   max-width: 46ch;
   font-size: var(--t-lg);
-  color: var(--c-text-dim);
+  color: var(--c-text);
 }
+
+/* Over photography the dim and amber text colours cannot hold 4.5:1 against
+   every frame of the image, so hero copy runs at full contrast. The amber
+   tick still carries the accent, and the H1 still owns the hierarchy. */
+.hero .eyebrow { color: var(--c-text); }
 
 .hero__actions {
   margin-top: var(--s-4);
@@ -196,6 +233,69 @@
   border-top: var(--bw-2) solid var(--c-accent);
   border-left: var(--bw-2) solid var(--c-accent);
   opacity: 0.55;
+}
+
+/* ---------- Shot — a real photograph in the plate's place ----------
+   Same angle-cut geometry and corner tick as .plate, so a filled slot and an
+   empty one read as the same family. */
+
+.shot {
+  position: relative;
+  overflow: hidden;
+  border: var(--bw-1) solid var(--c-line);
+  background: var(--c-surface);
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: var(--shot-ratio, 4 / 3);
+  object-fit: cover;
+}
+
+/* Warms the photo into the palette and knocks the highlights back so it sits
+   with the dark ground instead of punching a bright hole in it. */
+.shot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-content);
+  background:
+    linear-gradient(calc(90deg - var(--angle)),
+      color-mix(in srgb, var(--c-void) 46%, transparent),
+      color-mix(in srgb, var(--c-void) 8%, transparent) 62%,
+      color-mix(in srgb, var(--c-accent) 10%, transparent));
+  pointer-events: none;
+}
+
+.shot::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  z-index: var(--z-content);
+  width: 2.5rem; height: 2.5rem;
+  border-top: var(--bw-2) solid var(--c-accent);
+  border-left: var(--bw-2) solid var(--c-accent);
+  opacity: 0.75;
+}
+
+.shot--cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.5vw), 0 100%); }
+
+.shot__cap {
+  position: absolute;
+  left: var(--s-3);
+  bottom: var(--s-3);
+  z-index: var(--z-content);
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--c-text);
 }
 
 /* ---------- Sheen panel (mid-page section header backdrop) ---------- */

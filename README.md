@@ -78,10 +78,21 @@ your OS — the hero should still look like a finished composition.
 See `.claude/skills/webgl-site/SKILL.md` for the engine rules (one rAF loop, no allocations or
 layout reads inside it, DPR capped at 2, context-loss recovery).
 
-## Photo slots
+## Photography
 
-The site currently ships photo-free by design — the shaders, typography, and angle-cut graphics
-carry it. Every place a photograph belongs is marked two ways:
+Two placeholder photographs are in place: the homepage hero (timber roof framing) and the
+"Nine services" section (a finished kitchen). Both are CC BY 2.0 stock, cropped and graded to
+the palette — **see `CREDITS.md`, which explains the attribution obligation and how to swap
+them for real Shai Construction photos.** Replacing them is the single highest-value change
+you can make to this site.
+
+The hero's legibility comes from the CSS overlay in `.hero__media::after`, not from the photo,
+so a brighter replacement image cannot break the text contrast. Hero copy runs at full
+`--c-text` contrast for the same reason — dim and amber text cannot hold 4.5:1 against every
+frame of a photograph. All three hero text blocks currently measure 7.6:1 or better at 360,
+768, and 1440.
+
+Every remaining place a photograph belongs is marked two ways:
 
 - a `.plate` panel (on the homepage, services, and about pages), or a
   `.card--placeholder` card (on projects), each labelled with its aspect ratio on screen
