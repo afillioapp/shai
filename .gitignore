@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+._*
+
+# Local Claude Code settings (machine-specific permissions)
+.claude/settings.local.json
+
+# Editor
+.vscode/
+.idea/
+
+# Node — only ever used for local tooling, never shipped
+node_modules/
+npm-debug.log*

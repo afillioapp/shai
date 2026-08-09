@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Shai Construction — Design Tokens
+   Single source of truth for every color, type, space, and motion value.
+   No hex literal may appear anywhere else in the codebase.
+   ========================================================================== */
+
+:root {
+  /* ---- Color: dark ground — the default, primary surface across the site ---- */
+  --c-void:         #0D0C0B;
+  --c-surface:      #1A1714;
+  --c-surface-2:    #242019;
+  --c-line:         #3A342A;
+  --c-text:         #F2F0ED;
+  --c-text-dim:     #948C80;
+  --c-accent:       #FF6B1A;
+  --c-accent-hover: #E8611A;
+  --c-accent-ink:   #1A1714;
+  --c-danger:       #E8543F;
+  --c-concrete:     #E8E2D6;
+
+  /* ---- Type: families — self-hosted woff2 in /fonts, no CDN ---- */
+  --font-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --fw-display:  800;
+  --fw-display-2: 700;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+
+  /* ---- Type: fixed ratio ladder ---- */
+  --t-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --t-sm:   clamp(0.875rem, 0.84rem + 0.2vw, 0.9375rem);
+  --t-base: clamp(1rem, 0.96rem + 0.25vw, 1.0625rem);
+  --t-lg:   clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --t-xl:   clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --t-2xl:  clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+  --t-3xl:  clamp(2.75rem, 1.9rem + 4.4vw, 6rem);
+
+  /* ---- Type: rhythm ---- */
+  --lh-tight:   0.95;
+  --lh-heading: 1.05;
+  --lh-ui:      1.2;
+  --lh-body:    1.6;
+
+  --ls-tight:  -0.02em;
+  --ls-normal:  0em;
+  --ls-wide:    0.08em;
+
+  --measure:      68ch;
+  --measure-lead: 58ch;
+
+  /* ---- Space: 8px rhythm, geometric ladder ---- */
+  --s-1:  0.5rem;
+  --s-2:  1rem;
+  --s-3:  1.5rem;
+  --s-4:  2rem;
+  --s-5:  3rem;
+  --s-6:  4rem;
+  --s-7:  5.5rem;
+  --s-8:  7rem;
+  --s-9:  8.5rem;
+  --s-10: 10rem;
+
+  /* ---- Layout ---- */
+  --container:     1280px;
+  --gutter:        var(--s-3);
+  --section-pad-y: var(--s-8);
+  --nav-h:         64px;
+
+  /* ---- The signature angle: one value, one direction, everywhere.
+     To point a shape the other way, mirror the geometry with a transform —
+     never add a second angle token. ---- */
+  --angle: 24deg;
+
+  /* ---- Radius & border — square corners, no soft shadows ----
+     No --shadow token exists by design. Depth comes from the
+     --c-surface -> --c-surface-2 step and hairline borders. ---- */
+  --radius: 0;
+  --bw-1: 1px;
+  --bw-2: 2px;
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 180ms;
+  --dur:      420ms;
+  --dur-slow: 900ms;
+  --stagger-step: 60ms;
+
+  /* ---- Z-index scale ---- */
+  --z-canvas:  1;
+  --z-content: 10;
+  --z-nav:     100;
+  --z-drawer:  200;
+}
+
+/* ---- Inverted / light sections — opt-in per element, never a theme.
+   Components read the same token names in either context; nothing in
+   component CSS branches on theme. ---- */
+[data-surface="inverted"] {
+  --c-void:         #DDD5C6;
+  --c-surface:      #E8E2D6;
+  --c-surface-2:    #F3EFE7;
+  --c-line:         #C7BEAD;
+  --c-text:         #1A1714;
+  --c-text-dim:     #4A4438;
+  --c-accent:       #C2490A;
+  --c-accent-hover: #A83E08;
+  --c-accent-ink:   #F3EFE7;
+  --c-danger:       #B23A28;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter:        var(--s-6);
+    --section-pad-y: var(--s-10);
+    --nav-h:         80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root { --nav-h: 88px; }
+}

@@ -1,0 +1,404 @@
+/* ==========================================================================
+   Sections — hero, page layouts, graphic panels.
+   Every canvas-backed section is fully composed in CSS first; the <canvas>
+   is layered on top only once a first frame has rendered.
+   ========================================================================== */
+
+/* ---------- Canvas layer ---------- */
+
+.fx {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-canvas);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease);
+  pointer-events: none;
+}
+.fx[data-ready="true"] { opacity: 1; }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: calc(var(--nav-h) + var(--s-6)) var(--s-8);
+  overflow: hidden;
+  /* Composed static frame — caught mid-drift, not centred and dead. */
+  background:
+    radial-gradient(ellipse 62% 48% at 62% 42%,
+      color-mix(in srgb, var(--c-accent) 20%, transparent), transparent 62%),
+    linear-gradient(calc(90deg - var(--angle)),
+      var(--c-void) 22%, var(--c-surface) 42%, var(--c-line) 56%,
+      var(--c-surface) 68%, var(--c-void) 88%),
+    var(--c-void);
+}
+
+.hero__inner { position: relative; z-index: var(--z-content); width: 100%; }
+
+.hero__rule {
+  width: 4.5rem;
+  height: 4px;
+  margin-bottom: var(--s-3);
+  background: var(--c-accent);
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+}
+
+.hero h1 { max-width: 16ch; }
+
+.hero__lead {
+  margin-top: var(--s-3);
+  max-width: 46ch;
+  font-size: var(--t-lg);
+  color: var(--c-text-dim);
+}
+
+.hero__actions {
+  margin-top: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.hero__cue {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--s-3);
+  z-index: var(--z-content);
+  display: none;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
+.hero__cue::before {
+  content: "";
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(var(--c-text-dim), transparent);
+}
+
+@media (min-width: 768px) {
+  .hero { align-items: center; }
+  .hero__inner { max-width: 58%; }
+  .hero__actions { flex-direction: row; }
+  .hero__cue { display: flex; }
+}
+
+@media (min-width: 1280px) {
+  .hero__inner { max-width: 50%; }
+}
+
+/* ---------- Stats band ---------- */
+
+.stats {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: 1fr;
+}
+
+.stat__num {
+  font-family: var(--font-display);
+  font-weight: var(--fw-display);
+  font-size: var(--t-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.stat__label {
+  margin-top: var(--s-1);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--c-text-dim);
+}
+
+@media (min-width: 768px) {
+  /* Deliberately uneven: an evenly distributed row reads as a generic icon strip. */
+  .stats { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: var(--s-5); }
+}
+
+/* ---------- Split section (header left, content right) ---------- */
+
+.split { display: grid; gap: var(--s-5); grid-template-columns: 1fr; }
+
+@media (min-width: 1024px) {
+  .split { grid-template-columns: 5fr 7fr; gap: var(--s-6); align-items: start; }
+  .split--wide-left { grid-template-columns: 7fr 5fr; }
+}
+
+/* ---------- Services overview ---------- */
+
+@media (min-width: 768px) {
+  .rows--two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--s-5);
+  }
+}
+
+/* ---------- Graphic panel — the photo-free image slot ----------
+   A blueprint-derived plate built from the brand angle. Used wherever a
+   photograph would sit, sized to the aspect ratio the real photo will take. */
+
+.plate {
+  position: relative;
+  aspect-ratio: var(--plate-ratio, 4 / 3);
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      calc(90deg - var(--angle)),
+      transparent 0 22px,
+      color-mix(in srgb, var(--c-line) 42%, transparent) 22px 23px),
+    linear-gradient(calc(90deg - var(--angle)),
+      var(--c-surface-2), var(--c-surface) 60%, var(--c-void));
+  border: var(--bw-1) solid var(--c-line);
+}
+
+.plate--cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.5vw), 0 100%); }
+
+.plate__mark {
+  position: absolute;
+  right: -6%;
+  bottom: -12%;
+  width: 58%;
+  opacity: 0.09;
+  filter: grayscale(1);
+}
+
+.plate__tag {
+  position: absolute;
+  left: var(--s-3);
+  bottom: var(--s-3);
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--c-text-dim);
+}
+
+/* Corner ticks — the mark's vertex motif, repeated at plate scale. */
+.plate::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 2.5rem; height: 2.5rem;
+  border-top: var(--bw-2) solid var(--c-accent);
+  border-left: var(--bw-2) solid var(--c-accent);
+  opacity: 0.55;
+}
+
+/* ---------- Sheen panel (mid-page section header backdrop) ---------- */
+
+.sheen {
+  position: relative;
+  overflow: hidden;
+  /* Frozen sweep at 35% across — the composed fallback frame. */
+  background:
+    linear-gradient(calc(90deg - var(--angle)),
+      transparent 0 28%,
+      color-mix(in srgb, var(--c-text) 7%, transparent) 35%,
+      transparent 42% 100%),
+    var(--c-surface);
+}
+.sheen__inner { position: relative; z-index: var(--z-content); }
+
+/* ---------- Process steps ---------- */
+
+.steps { display: grid; gap: var(--s-5); grid-template-columns: 1fr; counter-reset: step; }
+
+.step { position: relative; padding-top: var(--s-4); }
+
+.step::before {
+  counter-increment: step;
+  content: "0" counter(step);
+  position: absolute;
+  top: 0;
+  left: -0.06em;
+  font-family: var(--font-display);
+  font-weight: var(--fw-display);
+  font-size: var(--t-2xl);
+  line-height: 0.8;
+  letter-spacing: var(--ls-tight);
+  color: var(--c-line);
+}
+
+.step h3 { position: relative; margin-bottom: var(--s-1); }
+
+@media (min-width: 768px) {
+  .steps { grid-template-columns: repeat(2, 1fr); gap: var(--s-6) var(--s-5); }
+}
+@media (min-width: 1280px) {
+  /* Compresses rightward so it reads as a sequence, not a symmetric grid. */
+  .steps { grid-template-columns: 1.3fr 1.1fr 1fr 1fr; gap: var(--s-4); }
+}
+
+/* ---------- Service detail (services.html) ---------- */
+
+.service {
+  padding-block: var(--s-6);
+  border-top: var(--bw-1) solid var(--c-line);
+  display: grid;
+  gap: var(--s-3);
+  grid-template-columns: 1fr;
+  scroll-margin-top: calc(var(--nav-h) + var(--s-3));
+}
+
+.service__no {
+  font-family: var(--font-display);
+  font-weight: var(--fw-display);
+  font-size: var(--t-sm);
+  letter-spacing: var(--ls-wide);
+  color: var(--c-accent);
+}
+
+@media (min-width: 1024px) {
+  .service { grid-template-columns: 1fr 6fr 4fr; gap: var(--s-5); align-items: start; }
+
+  /* Alternate sides on even rows so nine near-identical rows read as a
+     considered sequence, not a stamped-out template — text keeps the wide
+     6fr slot and the plate keeps the narrow 4fr slot, only the side flips. */
+  .service:nth-of-type(even) { grid-template-columns: 1fr 4fr 6fr; }
+  .service:nth-of-type(even) > div:nth-child(2) { order: 3; }
+  .service:nth-of-type(even) > div:nth-child(3) { order: 2; }
+
+  /* Mirror the plate's graphic elements on flipped rows via transform —
+     same angle, geometry pointed the other way, never a second angle token. */
+  .service:nth-of-type(even) .plate::after {
+    top: auto; left: auto; right: 0; bottom: 0;
+    border-top: 0; border-left: 0;
+    border-bottom: var(--bw-2) solid var(--c-accent);
+    border-right: var(--bw-2) solid var(--c-accent);
+  }
+  .service:nth-of-type(even) .plate__mark {
+    right: auto; left: -6%;
+    transform: scaleX(-1);
+  }
+  .service:nth-of-type(even) .plate__tag { left: auto; right: var(--s-3); }
+}
+
+/* ---------- Card grid ---------- */
+
+.cards { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
+
+@media (min-width: 640px)  { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .cards { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); } }
+
+/* ---------- CTA band ---------- */
+
+.cta {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-void);
+}
+
+/* The section's one big graphic gesture: an angle-cut amber wedge bleeding
+   in from the right, held well under the 5% accent budget. */
+.cta::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 46%;
+  background: linear-gradient(calc(90deg - var(--angle)),
+    transparent, color-mix(in srgb, var(--c-accent) 16%, transparent));
+  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.cta__inner { position: relative; z-index: var(--z-content); display: grid; gap: var(--s-4); }
+
+.cta__actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+@media (min-width: 768px) {
+  .cta__inner { grid-template-columns: 7fr 5fr; align-items: center; gap: var(--s-6); }
+  .cta__actions { justify-content: flex-end; }
+}
+
+/* ---------- Page header (interior pages) ---------- */
+
+.pagehead {
+  position: relative;
+  overflow: hidden;
+  padding-block: calc(var(--nav-h) + var(--s-7)) var(--s-7);
+  background:
+    radial-gradient(ellipse 70% 60% at 78% 30%,
+      color-mix(in srgb, var(--c-accent) 12%, transparent), transparent 62%),
+    linear-gradient(calc(90deg - var(--angle)), var(--c-void), var(--c-surface) 70%);
+}
+.pagehead__inner { position: relative; z-index: var(--z-content); }
+.pagehead h1 { max-width: 18ch; font-size: var(--t-2xl); }
+
+/* ---------- Breadcrumb ---------- */
+
+.crumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  margin-bottom: var(--s-3);
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--c-text-dim);
+}
+.crumb a { color: var(--c-text-dim); text-decoration: none; }
+.crumb a:hover { color: var(--c-text); }
+.crumb li + li::before { content: "/"; margin-right: var(--s-1); color: var(--c-line); }
+
+/* ---------- Contact layout ---------- */
+
+.contact { display: grid; gap: var(--s-6); grid-template-columns: 1fr; }
+
+@media (min-width: 1024px) {
+  /* Stretch so the shorter aside column can match the form column's height
+     instead of leaving raw surface hanging below it; the aside itself
+     distributes that extra height into the closing graphic plate. */
+  .contact { grid-template-columns: 7fr 5fr; gap: var(--s-7); align-items: stretch; }
+  .contact > aside { display: flex; flex-direction: column; }
+}
+
+/* Closing graphic plate — purely compositional, fills the aside's remaining
+   height so the column reads as finished rather than trailing into void. */
+.contact__plate {
+  display: none;
+  margin-top: var(--s-4);
+}
+@media (min-width: 1024px) {
+  .contact__plate { display: block; flex: 1 1 auto; min-height: 6rem; aspect-ratio: auto; }
+}
+
+.detail { padding-block: var(--s-3); border-top: var(--bw-1) solid var(--c-line); }
+.detail__label {
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--c-text-dim);
+  margin-bottom: var(--s-1);
+}
+.detail a { color: var(--c-text); text-decoration: none; font-size: var(--t-lg); }
+.detail a:hover { color: var(--c-accent); }
+
+/* ---------- Editor note — visible on purpose, so placeholders can't ship silently ---------- */
+
+.note {
+  display: flex;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-left: var(--bw-2) solid var(--c-accent);
+  background: var(--c-surface-2);
+  font-size: var(--t-sm);
+  color: var(--c-text-dim);
+}
+.note strong { color: var(--c-text); }
