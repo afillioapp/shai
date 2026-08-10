@@ -19,10 +19,10 @@ Pages, or plain cPanel/FTP. There is nothing to compile.
 
 1. **Confirm the domain.** Every canonical URL, `og:url`, and JSON-LD `@id` currently assumes
    `https://www.shaiconstruction.ca/` (inferred from the business email). If the real domain
-   differs, find and replace it across all five `.html` files, `sitemap.xml`, and `robots.txt`.
+   differs, find and replace it across all four `.html` files, `sitemap.xml`, and `robots.txt`.
 2. **Add business hours** on `contact.html` (there's a visible note marking the spot) and mirror
    them into the JSON-LD as `openingHoursSpecification`.
-3. **Add real project photos** — see "Photo slots" below.
+3. **Swap the two stock photos** for real Shai Construction work — see `CREDITS.md`.
 4. **Add `og:image` files** (1200×630) and reference them in each page's head.
 5. Optionally add `geo` coordinates and `priceRange` to the JSON-LD. Both were deliberately
    left out rather than guessed.
@@ -30,7 +30,7 @@ Pages, or plain cPanel/FTP. There is nothing to compile.
 ## Structure
 
 ```
-index.html services.html projects.html about.html contact.html
+index.html services.html about.html contact.html
 css/
   tokens.css      every color, type, space, motion value — the single source of truth
   fonts.css       @font-face for the self-hosted woff2 files
@@ -63,7 +63,7 @@ Three hand-written GLSL effects, no 3D library:
 | Effect | Where | What it does |
 |---|---|---|
 | `shaft` | homepage hero | a column of warm light falling at the brand angle, carrying dust |
-| `sheen` | projects header, about page | a slow specular sweep across brushed steel |
+| `sheen` | about page, "How we work" | a slow specular sweep across brushed steel |
 | `drift` | CTA bands | barely-there dust motes; deliberately inert to input |
 
 Mount one by adding `<canvas class="fx" data-fx="shaft" aria-hidden="true"></canvas>` as the
@@ -94,9 +94,12 @@ frame of a photograph. All three hero text blocks currently measure 7.6:1 or bet
 
 Every remaining place a photograph belongs is marked two ways:
 
-- a `.plate` panel (on the homepage, services, and about pages), or a
-  `.card--placeholder` card (on projects), each labelled with its aspect ratio on screen
+- a `.plate` panel, labelled with its aspect ratio on screen
 - an HTML comment directly above it giving the suggested `alt` text
+
+Filled slots use `.shot` instead — same angle-cut geometry and corner tick, so a photo and an
+empty slot read as the same family. `.shot--light` is the gentler overlay used on the services
+page, where the photographs should stay bright.
 
 To drop in a real photo, replace the `.plate` div with:
 
@@ -126,7 +129,7 @@ info@shaiconstruction.ca
 Providing construction services since 2017
 ```
 
-The name/address/phone appears in the footer of all five pages, on the contact page, and in the
+The name/address/phone appears in the footer of all four pages, on the contact page, and in the
 JSON-LD. If those copies drift apart, local search ranking suffers — treat any mismatch as a bug.
 
 **No testimonials, ratings, review counts, awards, licence numbers, staff names, or project

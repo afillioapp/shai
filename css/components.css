@@ -311,69 +311,6 @@
 }
 .row:hover .row__arrow { color: var(--c-accent); transform: translate(4px, -2px); }
 
-/* ---------- Cards ---------- */
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--c-surface-2);
-  border: var(--bw-1) solid var(--c-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  text-decoration: none;
-  transition: border-color var(--dur) var(--ease);
-}
-/* Accent lands on the edge nearest the image cut, never all four sides. */
-.card:hover { border-top-color: var(--c-accent); }
-
-.card__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--c-surface); }
-.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease); }
-.card:hover .card__media img { transform: scale(1.04); }
-
-.card__body { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-1); }
-
-.card__kicker {
-  font-family: var(--font-display);
-  font-weight: var(--fw-display);
-  font-size: var(--t-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-wide);
-  color: var(--c-accent);
-}
-
-.card__title {
-  font-family: var(--font-display);
-  font-weight: var(--fw-display);
-  font-size: var(--t-lg);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-tight);
-  line-height: var(--lh-heading);
-  color: var(--c-text);
-}
-
-.card__text { font-size: var(--t-sm); color: var(--c-text-dim); }
-
-/* Placeholder card — deliberately visible so it cannot ship unnoticed. */
-.card--placeholder .card__media {
-  display: grid;
-  place-content: center;
-  background:
-    repeating-linear-gradient(
-      calc(90deg - var(--angle)),
-      var(--c-surface) 0 12px,
-      var(--c-surface-2) 12px 24px);
-}
-.card--placeholder .card__media span {
-  font-family: var(--font-display);
-  font-size: var(--t-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-wide);
-  color: var(--c-text-dim);
-  text-align: center;
-  padding: var(--s-2);
-}
-
 /* ---------- Forms ---------- */
 
 .field { display: flex; flex-direction: column; gap: var(--s-1); margin-bottom: var(--s-3); }

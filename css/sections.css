@@ -282,15 +282,31 @@
 
 .shot--cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.5vw), 0 100%); }
 
+/* Light overlay — just enough to tie the photo to the palette and stop it
+   punching a bright hole in the dark ground. No text sits on these, so the
+   overlay is doing colour work, not contrast work. */
+.shot--light::before {
+  background:
+    linear-gradient(calc(90deg - var(--angle)),
+      color-mix(in srgb, var(--c-void) 22%, transparent),
+      transparent 55%,
+      color-mix(in srgb, var(--c-accent) 7%, transparent));
+}
+.shot--light::after { opacity: 0.6; }
+
+/* Carries its own ground, so the caption stays legible whatever the photo
+   behind it happens to be doing. */
 .shot__cap {
   position: absolute;
-  left: var(--s-3);
-  bottom: var(--s-3);
+  left: var(--s-2);
+  bottom: var(--s-2);
   z-index: var(--z-content);
   display: flex;
   align-items: center;
   gap: var(--s-1);
   margin: 0;
+  padding: var(--s-1) var(--s-2);
+  background: color-mix(in srgb, var(--c-void) 82%, transparent);
   font-family: var(--font-display);
   font-size: var(--t-xs);
   text-transform: uppercase;
@@ -386,13 +402,6 @@
   }
   .service:nth-of-type(even) .plate__tag { left: auto; right: var(--s-3); }
 }
-
-/* ---------- Card grid ---------- */
-
-.cards { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
-
-@media (min-width: 640px)  { .cards { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .cards { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); } }
 
 /* ---------- CTA band ---------- */
 

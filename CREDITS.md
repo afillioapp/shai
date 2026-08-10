@@ -1,6 +1,9 @@
 # Photo credits
 
-The two photographs currently on this site are **placeholders**. They are licensed
+The nine service photographs in `img/services/` were supplied by the client and are not
+covered by this file.
+
+The two photographs below are **stock placeholders**. They are licensed
 Creative Commons Attribution 2.0 (CC BY 2.0), which permits commercial use **provided the
 credit below is displayed**. That credit currently appears in the site footer.
 
